@@ -78,15 +78,24 @@ if(!accessToken)
           );
           
           return res.send({
+            isSuccess: true,
             userIdx: userIdx,
             jwt: token,
           });
         }).catch(function (error) {
-            console.log(error);
+            return res.send({
+                isSuccess: false,
+                userIdx: null,
+                jwt: null,
+              });
           });
         }
         catch (err) {
             logger.error(`App - login error\n: ${err.message}`);
-            return errResponse(baseResponse.DB_ERROR);
+            return res.send({
+                isSuccess: false,
+                userIdx: null,
+                jwt: null,
+              });
         }
 };
