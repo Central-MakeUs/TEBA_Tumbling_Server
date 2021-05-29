@@ -9,7 +9,7 @@ const { logger } = require("../../../config/winston");
 
 /**
  * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
+ * API Name : 가게 조회 API (+ 이메일로 검색 조회)
  * [GET] /app/stores
  */
 exports.getStores = async function (req, res) {
