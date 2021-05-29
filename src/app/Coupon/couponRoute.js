@@ -5,8 +5,8 @@ module.exports = function(app){
     // 쿠폰 개수 조회
     app.get('/coupons', jwtMiddleware, coupon.getCoupons)
 
-    //가게 정보 조회
-    //app.get('/coupons/:couponIdx', coupon.getCouponById)
+    // 쿠폰 적립
+    app.post('/coupons', coupon.postCoupons)
 
 
 };
