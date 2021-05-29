@@ -2,7 +2,11 @@ module.exports = function(app){
     const store = require('./storeController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
-    // 0. 테스트 API
-    // app.get('/app/test', user.getTest)
+    // 주변 가게 조회
+    app.get('/stores', store.getStores)
+
+    //가게 정보 조회
+    app.get('/stores/:storeIdx', store.getStoreById)
+
 
 };
