@@ -29,24 +29,23 @@ function add_coupon() {
     
     const url = new URL(window.location.href);
     var donate = location.search.split("=");
-  
+
     var sendData = {
-        "donationIdx": donate[1],
+        "donateIdx": donate[1],
         "storeCode" :document.getElementById("code").value,
     }
  
     $.ajax({
-      url: "../../coupons",
-      type: "POST",
+      url: "../../donates",
+      type: "PATCH",
       cache: false,
       data: sendData,
       dataType: "json",
-      success : function (data) {
-    alert("tjdrhd")
-      console.log(data);
+      success : function (result) {
+    alert(result.message)
+    
     },error: function (xhr, status, error) {           
-
-    alert("실패");
+    alert("쿠폰적립에 실패했습니다");
 }    
 });
   }

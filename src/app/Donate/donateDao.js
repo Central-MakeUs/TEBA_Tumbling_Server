@@ -45,10 +45,19 @@ async function getdonateReservation(connection, param){
     const [rows] = await connection.query(donateReservationQuery, param);
     return rows;
 }
+async function selectDonateById(connection, donateIdx){
+    const donateReservationQuery = `
+        select idx, userIdx,quantity from Donate where idx=? and status='예약'
+    `;
+    const [rows] = await connection.query(donateReservationQuery, donateIdx);
+    return rows;
+}
+
 
 module.exports = {
     getDonateStores,
     donateAction,
     donateComplete,
     getdonateReservation,
+    selectDonateById
 };

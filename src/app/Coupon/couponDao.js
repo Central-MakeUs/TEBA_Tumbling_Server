@@ -8,13 +8,16 @@ async function selectCoupon(connection, userIdx) {
     return couponRows[0];
   }
 
-  async function insertCoupon(connection, userIdx, storeIdx) {
+    async function insertCoupon(connection, userIdx, storeIdx, quantity) {
     
-    const selectCouponQuery = `INSERT INTO Coupon(userIdx, storeIdx) VALUES(?,?)`;
-  
+    var selectCouponQuery = `INSERT INTO Coupon(userIdx, storeIdx) VALUES(?,?)`;
+	    for(let i = 0; i<quantity-1; i++){
+	    selectCouponQuery += `,(${userIdx},${storeIdx})`
+    }
     const couponRows = await connection.query(selectCouponQuery, [userIdx, storeIdx]);
     return couponRows[0];
   }
+  
 
   async function useCoupon(connection, userIdx) {
     
