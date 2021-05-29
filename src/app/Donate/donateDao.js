@@ -15,7 +15,13 @@ async function donateAction(connection, param){
         insert Donate(storeIdx, userIdx, quantity) values(?, ?, ?);
     `;
     const [rows] = await connection.query(donateInsertQuery, param);
-    return rows;
+
+    const getDonateIdxQuery = `
+        select LAST_INSERT_ID() as donateIdx;
+    `
+    const row = await connection.query(getDonateIdxQuery);
+
+    return row;
 }
 
 module.exports = {
