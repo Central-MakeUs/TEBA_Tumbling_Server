@@ -3,12 +3,12 @@ const {logger} = require('../../../config/winston');
 const jwtMiddleware = require("../../../config/jwtMiddleware");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
-const dondateDao = require("./donateDao")
+const donateDao = require("./donateDao")
 
 /**
  * API No. 2
  * API Name : 기부 가능한 가게 조회 API
- * [GET] /stroes/donate
+ * [POST] /donates
  */
 exports.getDonateStores = async function (req, res) {
 
@@ -24,7 +24,7 @@ exports.getDonateStores = async function (req, res) {
         const connection = await pool.getConnection(async conn => conn);
         try {
             const param = [latitude, longitude, latitude];
-            const rows = await dondateDao.getDonateStores(connection, param);
+            const rows = await donateDao.getDonateStores(connection, param);
             connection.release();
             return res.send(response(baseResponse.SUCCESS, rows));
         } catch (err) {
@@ -37,3 +37,36 @@ exports.getDonateStores = async function (req, res) {
         return false;
     }
 };
+
+/**
+ * API No. 4
+ * API Name : 기부 예약하기
+ * [POST] /donates
+ */
+exports.donateAction = async function (req, res) {
+    const {storeIdx, tumblerCount} = req.body;
+    const userIdx = req.verifiedToken.userIdx;
+
+    if(!storeIdx || !tumblerCount){
+        return res.send(errResponse(baseResponse.USER_DONATEINFO_EMPTY))
+    }
+
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            const param = [storeIdx, userIdx, tumblerCount];
+            const rows = await donateDao.donateAction(connection, param);
+            connection.release();
+            return res.send(response(baseResponse.SUCCESS));
+        } catch (err) {
+            logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
+            connection.release();
+            return false;
+        }
+    } catch (err) {
+        logger.error(`example non transaction DB Connection error\n: ${JSON.stringify(err)}`);
+        return false;
+    }
+}
+
+

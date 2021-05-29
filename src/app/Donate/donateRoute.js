@@ -3,5 +3,6 @@ module.exports = function(app){
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     app.get('/donates', donate.getDonateStores);
+    app.post('/donates', jwtMiddleware, donate.donateAction);
 
 };
