@@ -35,6 +35,7 @@ module.exports = {
     USER_LOCATION_EMPTY : {"isSuccess": false, "code":2019, "message" : "유저의 위치를 입력해주세요"},
     USER_DONATEINFO_EMPTY : {"isSuccess": false, "code":2020, "message" : "예약 정보를 입력해주세요"},
     SEARCH_KEYWORD_EMPTY : {"isSuccess": false, "code":2021, "message" : "검색어를 입력해주세요"},
+DONATE_IDX_NOT_MATCH : {"isSuccess": false, "code":2055, "message" : "예약번호를 확인해주세요"},
 
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
