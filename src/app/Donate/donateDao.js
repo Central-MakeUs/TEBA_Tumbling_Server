@@ -24,7 +24,19 @@ async function donateAction(connection, param){
     return row;
 }
 
+async function donateComplete(connection, param){
+    const donateCompleteQuery = `
+        update Donate
+        set status = '완료'
+        where idx=?;
+    `;
+
+    const [rows] = await connection.query(donateCompleteQuery, param);
+    return rows;
+}
+
 module.exports = {
     getDonateStores,
     donateAction,
+    donateComplete,
 };
