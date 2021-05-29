@@ -31,9 +31,19 @@ async function selectStore(connection, latitude, longitude, distance) {
     return storeRows[0];
   }
 
+  async function searchStores(connection, param){
+    const storeSearchQuery = `
+        select idx, storeName, ifnull(imgUrl, "") as imgUrl, latitude, longitude, tumblerCount, openingTime, ifnull(storeUrl,"") as storeUrl, tumblingPoint, ifnull(phone,"") as phone
+        from Store
+        WHERE storeName like concat('%',?,'%');
+    `;
+    const [storeRows] = await connection.query(storeSearchQuery, param);
+    return storeRows;
+  }
 
   module.exports = {
     selectStore,
     selectStoreById,
-    selectStoreByCode
+    selectStoreByCode,
+    searchStores,
   }
