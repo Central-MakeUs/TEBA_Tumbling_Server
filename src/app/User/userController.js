@@ -5,6 +5,7 @@ const { pool } = require("../../../config/database");
 const { connect } = require("http2");
 const {emit} = require("nodemon");
 const userDao = require("./userDao");
+const donateDao = require("../Donate/donateDao");
 const axios = require("axios");
 const { logger } = require("../../../config/winston");
 const jwt = require("jsonwebtoken");
@@ -103,3 +104,29 @@ exports.autoLogin = async function (req, res) {
     const userIdResult = req.verifiedToken.userIdx;
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
+
+/**
+ * API No. 6
+ * API Name : 기부 예약 목록 조회
+ * [POST] /users/donates
+ */
+exports.getDonateReservation = async function(req, res){
+    const userIdx = req.verifiedToken.userIdx;
+
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            const param = [userIdx]
+            const rows = await donateDao.getdonateReservation(connection, param);
+            connection.release();
+            return res.send(response(baseResponse.SUCCESS, rows));
+        } catch (err) {
+            logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
+            connection.release();
+            return false;
+        }
+    } catch (err) {
+        logger.error(`example non transaction DB Connection error\n: ${JSON.stringify(err)}`);
+        return false;
+    }
+}
