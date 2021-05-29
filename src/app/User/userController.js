@@ -140,7 +140,7 @@ exports.getUserInfo = async function(req, res){
             const param = [userIdx]
             const rows = await userDao.getUserInfo(connection, param);
             connection.release();
-            return res.send(response(baseResponse.SUCCESS, rows));
+            return res.send(response(baseResponse.SUCCESS, rows[0]));
         } catch (err) {
             logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
             connection.release();
