@@ -4,5 +4,5 @@ module.exports = function(app){
 
     app.get('/donates', donate.getDonateStores);
     app.post('/donates', jwtMiddleware, donate.donateAction);
-
+    app.patch('/donates', donate.donateComplete);
 };

@@ -69,4 +69,35 @@ exports.donateAction = async function (req, res) {
     }
 }
 
+/**
+ * API No. 5
+ * API Name : 기부 완료
+ * [PATCH] /donates
+ */
+exports.donateComplete = async function(req, res){
+
+    const {donateIdx} = req.body;
+
+    if(!donateIdx){
+        return res.send(errResponse(baseResponse.USER_DONATEINFO_EMPTY))
+    }
+
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            const param = [donateIdx]
+            const row = await donateDao.donateComplete(connection, param);
+            connection.release();
+            return res.send(response(baseResponse.SUCCESS));
+        } catch (err) {
+            logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
+            connection.release();
+            return false;
+        }
+    } catch (err) {
+        logger.error(`example non transaction DB Connection error\n: ${JSON.stringify(err)}`);
+        return false;
+    }
+}
+
 
