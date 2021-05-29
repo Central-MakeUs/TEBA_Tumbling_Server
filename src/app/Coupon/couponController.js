@@ -5,7 +5,10 @@ const { pool } = require("../../../config/database");
 const { connect } = require("http2");
 const {emit} = require("nodemon");
 const couponDao = require("./couponDao");
+const storeDao = require("../Store/storeDao");
 const { logger } = require("../../../config/winston");
+const jwt = require('jsonwebtoken');
+const secret_config = require("../../../config/secret");
 
 /**
  * API Name : 쿠폰 조회 API 
@@ -30,27 +33,50 @@ exports.getCoupons = async function (req, res) {
       }
 };
 
-exports.getCouponById = async function (req, res) {
+exports.postCoupons = async function (req, res) {
 
     /**
-     * Path variable : couponIdx
+     * Body : userJwt, storeNumber
      */
 
-    const couponIdx = req.params.couponIdx;
+    const {userJwt, storeCode} = req.body;
 
-    //TODO:validation
+    //토큰 확인
+    var userIdFromJWT;
+    if (userJwt) {
+        jwt.verify(userJwt, secret_config.jwtsecret, (err, verifiedToken) => {
+          if (verifiedToken) {
+            userIdFromJWT = verifiedToken.userIdx;
+          }
+        });
+        if (!userIdFromJWT) {
+          return res.send(errResponse(baseResponse.TOKEN_VERIFICATION_FAILURE));
+        }
+      }
 
     try {
+    //가게 번호 확인
     const connection = await pool.getConnection(async (conn) => conn);
-    const couponResult = await couponDao.selectCouponById(
+
+    const storeResult = await storeDao.selectStoreByCode(
+        connection,
+        storeCode
+    );
+
+    if(!storeResult)
+        return res.send(errResponse(baseResponse.STORE_CODE_NOT_MATCH));
+
+    //적립
+    const couponResult = await couponDao.insertCoupon(
     connection,
-    couponIdx
+    userIdFromJWT, storeResult[0].idx
     );
     connection.release();
-    return res.send(response(baseResponse.SUCCESS, couponResult[0]))
+
+    return res.send(response(baseResponse.SUCCESS, {couponIdx: couponResult.insertId}))
     }
     catch (err) {
-        logger.error(`App - getcoupon error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-      }
+        logger.error(`App - postcoupon error\n: ${err.message}`);
+        return res.send(errResponse(baseResponse.DB_ERROR));
+    }
 };
