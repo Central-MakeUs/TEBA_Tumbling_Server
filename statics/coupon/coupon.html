@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텀블링 쿠폰 적립</title>
+    <link rel="stylesheet" type='text/css' href="./coupon.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    텀블링 쿠폰 적립을 위헤 가게 코드를 입력해주세요.
+    <input type="text" id="code" name="storeCode" placeholder="store code"/>
+    <button id="button" onclick="add_coupon();">적립</button>
+</body>
+<script>
+function add_coupon() {
+    
+    const url = new URL(window.location.href);
+    var user = location.search.split("=");
+  
+    var sendData = {
+        "userJwt": user[1],
+        "storeCode" :document.getElementById("code").value,
+    }
+ 
+    $.ajax({
+      url: "../../coupons",
+      type: "POST",
+      cache: false,
+      data: sendData,
+      dataType: "json",
+      success : function (data) {
+    alert("tjdrhd")
+      console.log(data);
+    },error: function (xhr, status, error) {           
+
+    alert("실패");
+}    
+});
+  }
+
+</script>
+</html>
