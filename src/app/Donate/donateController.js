@@ -55,9 +55,9 @@ exports.donateAction = async function (req, res) {
         const connection = await pool.getConnection(async conn => conn);
         try {
             const param = [storeIdx, userIdx, tumblerCount];
-            const rows = await donateDao.donateAction(connection, param);
+            const [donationIdx] = await donateDao.donateAction(connection, param);
             connection.release();
-            return res.send(response(baseResponse.SUCCESS));
+            return res.send(response(baseResponse.SUCCESS, donationIdx[0]));
         } catch (err) {
             logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
             connection.release();
