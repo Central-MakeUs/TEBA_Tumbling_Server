@@ -12,7 +12,16 @@ async function signup(connection, userNumber, userEmail, profileImg, nickname ) 
     return userRow;
   }
 
+async function getUserInfo(connection, param){
+    const getUserInfoQuery = `
+        select nickname, ifnull(profileImg, '') as profileImg from User where idx=?;
+    `;
+    const [userRow] = await connection.query(getUserInfoQuery, param);
+    return userRow;
+}
+
 module.exports = {
   selectUserId,
-  signup
+  signup,
+  getUserInfo,
 };
