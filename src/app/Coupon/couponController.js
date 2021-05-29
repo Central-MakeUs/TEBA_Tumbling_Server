@@ -108,3 +108,15 @@ exports.patchCoupons = async function (req, res) {
     }
 };
 
+//쿠폰 적립 페이지(관리자용)
+exports.getCouponPage = (req, res, next) => {
+  res.sendFile(
+    "/statics/coupon/coupon.html",
+    {
+      root: "./",
+    }
+  );
+};
+
+
+
