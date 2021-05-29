@@ -8,16 +8,16 @@ async function selectCoupon(connection, userIdx) {
     return couponRows[0];
   }
 
-  async function selectCouponById(connection, couponIdx) {
+  async function insertCoupon(connection, userIdx, storeIdx) {
     
-    const selectCouponQuery = `select idx, couponName, location, tumblerCount, openingTime, status, possibleCount  from Coupon where idx=?`;
+    const selectCouponQuery = `INSERT INTO Coupon(userIdx, storeIdx) VALUES(?,?)`;
   
-    const couponRows = await connection.query(selectCouponQuery, couponIdx);
+    const couponRows = await connection.query(selectCouponQuery, [userIdx, storeIdx]);
     return couponRows[0];
   }
 
 
   module.exports = {
     selectCoupon,
-    selectCouponById
+    insertCoupon
   }
