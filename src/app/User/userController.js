@@ -130,3 +130,24 @@ exports.getDonateReservation = async function(req, res){
         return false;
     }
 }
+
+exports.getUserInfo = async function(req, res){
+    const userIdx = req.verifiedToken.userIdx;
+
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            const param = [userIdx]
+            const rows = await userDao.getUserInfo(connection, param);
+            connection.release();
+            return res.send(response(baseResponse.SUCCESS, rows));
+        } catch (err) {
+            logger.error(`example non transaction Query error\n: ${JSON.stringify(err)}`);
+            connection.release();
+            return false;
+        }
+    } catch (err) {
+        logger.error(`example non transaction DB Connection error\n: ${JSON.stringify(err)}`);
+        return false;
+    }
+}

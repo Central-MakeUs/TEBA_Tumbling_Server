@@ -11,4 +11,7 @@ module.exports = function(app){
     // 예약 조회
     app.get('/users/donates', jwtMiddleware, user.getDonateReservation);
 
+    // 프로필 조회
+    app.get('/users', jwtMiddleware, user.getUserInfo);
+
 };
