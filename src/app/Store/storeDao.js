@@ -23,8 +23,17 @@ async function selectStore(connection, latitude, longitude, distance) {
     return storeRows[0];
   }
 
+  async function selectStoreByCode(connection, storeCode) {
+    
+    const selectStoreQuery = `select idx from Store where storeCode=?`;
+  
+    const storeRows = await connection.query(selectStoreQuery, storeCode);
+    return storeRows[0];
+  }
+
 
   module.exports = {
     selectStore,
-    selectStoreById
+    selectStoreById,
+    selectStoreByCode
   }
