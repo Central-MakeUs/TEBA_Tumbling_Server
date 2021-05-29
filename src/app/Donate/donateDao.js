@@ -1,11 +1,10 @@
 async function getDonateStores(connection, param) {
     const getDonateStoresQuery = `
-                select idx, storeName, location, possibleCount, (6371*acos(cos(radians(?))*cos(radians(latitude))*cos(radians(longitude)-radians(?))+sin(radians(?))*sin(radians(latitude))))
-                    as distance
-                from Store
-                where status='가능'
-                order by distance;
-                `;
+        select idx, storeName, location, possibleCount, phone
+        from Store
+        where status='가능'
+        order by (6371*acos(cos(radians(?))*cos(radians(latitude))*cos(radians(longitude)-radians(?))+sin(radians(?))*sin(radians(latitude))));        
+	`;
     const [storeRows] = await connection.query(getDonateStoresQuery, param);
     return storeRows;
 }
