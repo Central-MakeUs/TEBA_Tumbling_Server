@@ -1,6 +1,6 @@
 async function selectStore(connection, latitude, longitude, distance) {
     
-    const selectStoreQuery = `select S.idx, tumblerCount, latitude, longitude from Store S
+    const selectStoreQuery = `select S.idx, latitude, longitude, storeName, location, tumblingPoint, imgUrl from Store S
     inner join (SELECT idx,
         (6371*acos(cos(radians(?))*cos(radians(latitude))*cos(radians(longitude)
         -radians(?))+sin(radians(?))*sin(radians(latitude))))
@@ -17,7 +17,7 @@ async function selectStore(connection, latitude, longitude, distance) {
 
   async function selectStoreById(connection, storeIdx) {
     
-    const selectStoreQuery = `select idx, storeName, location, tumblerCount, openingTime, status, possibleCount  from Store where idx=?`;
+    const selectStoreQuery = `select idx, storeName, location, latitude, longitude, tumblerCount, openingTime, storeUrl, phone, imgUrl from Store where idx=?`;
   
     const storeRows = await connection.query(selectStoreQuery, storeIdx);
     return storeRows[0];

@@ -16,8 +16,16 @@ async function selectCoupon(connection, userIdx) {
     return couponRows[0];
   }
 
+  async function useCoupon(connection, userIdx) {
+    
+    const selectCouponQuery = `UPDATE Coupon SET isDeleted='Y' where userIdx=? and isDeleted='N' limit 1 `;
+  
+    const couponRows = await connection.query(selectCouponQuery, [userIdx]);
+    return couponRows[0];
+  }
 
   module.exports = {
     selectCoupon,
-    insertCoupon
+    insertCoupon,
+    useCoupon
   }
