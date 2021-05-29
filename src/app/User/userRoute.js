@@ -8,4 +8,7 @@ module.exports = function(app){
      // 자동 로그인
      app.get('/auto-login', jwtMiddleware, user.autoLogin)
 
+    // 예약 조회
+    app.get('/users/donates', jwtMiddleware, user.getDonateReservation);
+
 };

@@ -35,8 +35,20 @@ async function donateComplete(connection, param){
     return rows;
 }
 
+async function getdonateReservation(connection, param){
+    const donateReservationQuery = `
+        select D.idx, D.storeIdx,S.storeName, S.imgUrl, D.quantity
+        from Donate D inner join Store S on D.storeIdx = S.idx
+        where D.userIdx=? and D.status='예약'
+        order by D.createdAt desc;
+    `;
+    const [rows] = await connection.query(donateReservationQuery, param);
+    return rows;
+}
+
 module.exports = {
     getDonateStores,
     donateAction,
     donateComplete,
+    getdonateReservation,
 };
