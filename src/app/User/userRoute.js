@@ -5,4 +5,7 @@ module.exports = function(app){
     // 카카오 로그인/회원가입
     app.post('/kakao-login', user.kakaoLogin)
 
+     // 자동 로그인
+     app.get('/auto-login', jwtMiddleware, user.autoLogin)
+
 };

@@ -99,3 +99,7 @@ if(!accessToken)
               });
         }
 };
+exports.autoLogin = async function (req, res) {
+    const userIdResult = req.verifiedToken.userIdx;
+    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+};
