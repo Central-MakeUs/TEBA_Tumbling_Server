@@ -5,6 +5,7 @@ const { pool } = require("../../../config/database");
 const { connect } = require("http2");
 const {emit} = require("nodemon");
 const storeDao = require("./storeDao");
+const { logger } = require("../../../config/winston");
 
 /**
  * API No. 2
