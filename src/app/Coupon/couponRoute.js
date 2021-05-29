@@ -1,6 +1,9 @@
 module.exports = function(app){
     const coupon = require('./couponController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
+    
+    //쿠폰 적립 페이지
+    app.get("/view/coupons", coupon.getCouponPage);
 
     // 쿠폰 개수 조회
     app.get('/coupons', jwtMiddleware, coupon.getCoupons)
