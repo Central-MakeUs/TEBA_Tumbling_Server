@@ -80,3 +80,31 @@ exports.postCoupons = async function (req, res) {
         return res.send(errResponse(baseResponse.DB_ERROR));
     }
 };
+
+exports.patchCoupons = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+
+    try {
+    //쿠폰 사용
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    //적립
+    const couponUseResult = await couponDao.useCoupon(
+    connection,
+    userIdx
+    );
+
+    const couponResult = await couponDao.selectCoupon(
+        connection,
+        userIdx
+        );
+    connection.release();
+    return res.send(response(baseResponse.SUCCESS, couponResult[0]))
+    }
+    catch (err) {
+        logger.error(`App - usercoupon error\n: ${err.message}`);
+        return res.send(errResponse(baseResponse.DB_ERROR));
+    }
+};
+

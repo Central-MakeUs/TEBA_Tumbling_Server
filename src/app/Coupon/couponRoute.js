@@ -8,5 +8,8 @@ module.exports = function(app){
     // 쿠폰 적립
     app.post('/coupons', coupon.postCoupons)
 
+    // 쿠폰 사용
+    app.patch('/coupons', jwtMiddleware, coupon.patchCoupons)
+
 
 };
