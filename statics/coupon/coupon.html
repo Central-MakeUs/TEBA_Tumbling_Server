@@ -16,10 +16,10 @@
 function add_coupon() {
     
     const url = new URL(window.location.href);
-    var user = location.search.split("=");
+    var donate = location.search.split("=");
   
     var sendData = {
-        "userJwt": user[1],
+        "donationIdx": donate[1],
         "storeCode" :document.getElementById("code").value,
     }
  
